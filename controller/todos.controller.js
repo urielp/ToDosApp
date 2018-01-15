@@ -64,20 +64,21 @@ exports.updateTodo = async function(req,res,next){
         return res.status(200).json({status: 200, data: updatedTodo, message: "Succesfully Updated Tod"})
     }
     catch(exception){
-        return res.status(400).json({status: 400., message: e.message})
+        return res.status(400).json({status: 400., message: exception.message})
     }
 }
 
 exports.removeTodo = async function(req,res,next){
     var id =req.params.id;
-
+    console.log("Removing todo with ID(controller): " + id);
 
     try{
         var deleted = await TodoService.deleteTodo(id);
         return res.status(204).json({status:204, message: "Succesfully Todo Deleted"});
     }
     catch (exception){
-        return res.status(400).json({status: 400, message: e.message});
+
+        return res.status(400).json({status: 400, message: exception.message});
     }
 }
 

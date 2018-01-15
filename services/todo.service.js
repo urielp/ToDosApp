@@ -86,15 +86,21 @@ exports.updateToDo =async function(todo){
 
 exports.deleteTodo = async function(id){
 
+    console.log("Removing todo with ID(service): " + id);
     try{
-        var deleted = await ToDo.remove({_id:id});
-        if(deleted.results.n==0){
+        var deleted = await  ToDo.remove({_id:id});
+        console.log("Deleted: " + deleted);
+        if(deleted.result.n === 0){
+
             throw Error("Todo could not be deleted");
+
         }
+
         return deleted;
     }
     catch(exception){
-        throw Error("Error occured while trying to delete todo")
+
+        throw Error("Error occured while trying to delete todo" +exception.message)
     }
 
 }
