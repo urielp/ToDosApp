@@ -5,12 +5,18 @@ var jwt    = require('jsonwebtoken');
 
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+ router.get('/', function(req, res, next) {
+   res.send('respond with a resource');
+ });
+
+//getting user info by id
+router.get('/user/:id',(req,res)=> {
+  res.json({message: 'getting users by id'});
 });
 
+
 //authenticating  a user
-router.post('/authenticate',function(req,res) {
+router.post('/authenticate',(req,res) => {
   console.log('authenticate');
 
   User.findOne({username:req.body.username},
@@ -46,13 +52,37 @@ router.post('/authenticate',function(req,res) {
         })
       }
     }
-  })
+  });
 });
 
 
+//middleware
+router.use((req,res,next) =>{
+
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  console.log(token);
+if(token){
+    console.log(req.app.get('superSecret'));
+    jwt.verify(token,req.app.get('superSecret'),function(err,decode) {
+      if(err){
+        console.log(err.message);
+        return res.json({success:false,message:'Failed to authenticate token. '});
+      }
+      else{
+        req.decoded = decode;
+        next();
+      }
+    })
+}
+else{
+  return res.status(403).send({success:false,message:'No token provided'});
+}
+
+});
+
 router.get('/setup',function(req,res){
 var Uriel = new User({
-  username:'Uriel',
+  username:'Uriel2',
   password:'12345',
   admin:true
 });
@@ -75,4 +105,6 @@ router.get('/users',(req,res)=>{
   res.json(users);
 });
 })
+
+
 module.exports = router;
