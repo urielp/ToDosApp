@@ -9,7 +9,7 @@ var bluebird = require('bluebird');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var api =require('./routes/api.route');
-
+var config = require('./config/config');
 var app = express();
 
 
@@ -17,14 +17,14 @@ var app = express();
 
 //mongo connection
 mongoose.Promise=bluebird;
-mongoose.connect('mongodb://127.0.0.1:27017/todoapp',{useMongoClient:true})
+mongoose.connect(config.database,{useMongoClient:true})
     .then(()=>{
             console.log('Connection to mongo at db todoapp was succesfull')
           })
     .catch(()=>{
     console.log('error while trying to connect to mongodb')
 });
-
+app.set('superSecret',config.secret);
 
 //CORS configuration
 app.use(function(req,res,next){
