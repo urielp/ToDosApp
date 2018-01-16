@@ -9,10 +9,6 @@ var jwt    = require('jsonwebtoken');
    res.send('respond with a resource');
  });
 
-//getting user info by id
-router.get('/user/:id',(req,res)=> {
-  res.json({message: 'getting users by id'});
-});
 
 
 //authenticating  a user
@@ -99,10 +95,27 @@ var Uriel = new User({
 
 
 
-
+//getting users list
 router.get('/users',(req,res)=>{
   User.find({},(err,users)=>{
   res.json(users);
+});
+
+
+//getting user info by id
+router.get('/user/:id',(req,res)=> {
+    res.json({message: 'getting users by id'});
+});
+
+
+//removing user info by id
+router.delete('/user/remove/:id',(req,res)=> {
+    res.json({message: 'TODO:remove users by id'});
+});
+
+//update user info by id
+router.put('/user/update/:id',(req,res)=> {
+    res.json({message: 'TODO:update users by id'});
 });
 })
 
