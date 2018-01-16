@@ -58,7 +58,6 @@ router.use((req,res,next) =>{
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
   console.log(token);
 if(token){
-    console.log(req.app.get('superSecret'));
     jwt.verify(token,req.app.get('superSecret'),function(err,decode) {
       if(err){
         console.log(err.message);
