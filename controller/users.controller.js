@@ -29,16 +29,14 @@ exports.authenticateUser = async function authenticateUser(req,res,next)
 
     };
     console.log(user.username + " --> " + user.password);
-    try {
+
         console.log('auth users - controller');
-        var response = await UserService.authenticateUser(user,req.app.get('superSecret'));
-        console.log("Response --> " +response);
-        return  res.status(200).json({status: 200, data:response.token,message: "some message"});
-
-
-    }
-
-    catch(exception){
-        return res.status(400).json({status:400,message:exception.message})
-    }
+        UserService.authenticateUser(user,req.app.get('superSecret'),(err, response)=>{
+            console.log("Response --> " +response);
+            return  res.status(200).json({status: 200, data:response.token,message: "some message"});
+        });
+    // }
+    // catch(exception){
+    //     return res.status(400).json({status:400,message:exception.message})
+    // }
 }

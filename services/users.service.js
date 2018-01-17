@@ -21,25 +21,24 @@ exports.usersWelcome = async function(){
     }
 }
 
-exports.authenticateUser = async function(user,secret){
+exports.authenticateUser = function(user,secret, callback){
 
-    try
-    { User.findOne({username:user.username},
+        User.findOne({username:user.username},
         (err,user)=>{
         if(err){
             console.log("Error");
-            return results = {success:false,message:err};
+            callback(err,{success:false,message:err});
         }
         if(!user){
         console.log('User not found!');
         //res.json({success:false,message:'Authentication failed.User not found.'});
-        return results = {success:false,message:'no such user'};
+        callback(null,{success:false,message:'no such user'});
     }
-else if(user){
+    else if(user){
         console.log('password verification');
         if(user.password!=user.password){
          //   res.json({success:false,message:"authentication failed.Wrong password"});
-           return results = {success:false,message:"authentication failed.Wrong password"};
+           callback(null,{success:false,message:"authentication failed.Wrong password"});
         }
         else
         {
@@ -57,15 +56,13 @@ else if(user){
             //     message:'Enjoy your token',
             //     toekn:token
             // })
-            return results = {
+            callback(null, {
                 success:true,
                 message:'Enjoy Your Token',
                 token:token
-            }
+            });
         }
     }
 })}
-    catch (exception){
-        return exception.message;
-    };
-}
+
+
