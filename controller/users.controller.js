@@ -71,6 +71,26 @@ UserService.tokenVerification(token,secret,(response,err)=>{
 }
 
 
+exports.myTestAsync =async function(req,res)
+{
+    try{
+        var user = {
+            username:req.body.username,
+            password:req.body.password
+        }
+
+        var userResult = await UserService.myTestAsync(user);
+        if(userResult)
+            return res.status(200).json({status:200,data:userResult,message:"great"});
+        else
+            return res.status(500).json({status:500,message:"User not found"});
+    }
+    catch(exception){
+        return  res.status(500).json({status:500,data:{},message:exception.message});
+    }
+
+}
+
 
 
 

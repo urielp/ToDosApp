@@ -7,11 +7,16 @@ var express = require('express');
 var router =express.Router();
 
 var UsersController =require('../../controller/users.controller');
+
 var User = require('../../models/users.model');
 
 //main users
 router.get('/',UsersController.usersWelcome);
 
+
+//testing async
+
+router.post('/test',UsersController.myTestAsync);
 
 //authenticate users
 router.post('/authenticate',UsersController.authenticateUser);

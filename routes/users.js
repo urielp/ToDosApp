@@ -47,7 +47,7 @@ router.post('/authenticate',(req,res) => {
     else if(user){
       console.log('password verification');
       if(user.password!=req.body.password){
-        res.json({success:false,message:"authentication failed.Wronf password"});
+        res.json({success:false,message:"authentication failed.Wrong password"});
       }
       else
       {

@@ -87,3 +87,19 @@ exports.tokenVerification = function(token,secret,callback)
         //return res.status(403).send({success:false,message:'No token provided'});
     }
 }
+
+
+    
+//use this base skeleton for async/await usage
+///this is working now
+exports.myTestAsync = async function (user) {
+
+    try {
+        var results = await User.findOne({username:user.username});
+        return results;
+    }
+    catch(exception)
+    {
+        return exception.message;
+    }
+}
