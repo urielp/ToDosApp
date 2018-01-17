@@ -10,14 +10,14 @@ _this = this;
 
 
 
-exports.usersWelcome = async function(){
+exports.usersWelcome = function(callback){
     //Try Catch the awaited promise to handel the error
     try{
-
+            callback(null,{success:true,message:'welcome to users section'});
     }
     catch(exception){
         //return an error message
-        throw Error('error while welcoming users');
+        throw Error({status:500,message:'error while welcoming users ' + exception.message});
     }
 }
 
@@ -27,18 +27,18 @@ exports.authenticateUser = function(user,secret, callback){
         (err,user)=>{
         if(err){
             console.log("Error");
-            callback(err,{success:false,message:err});
+            callback({message:"Error"},null);
         }
         if(!user){
         console.log('User not found!');
         //res.json({success:false,message:'Authentication failed.User not found.'});
-        callback(null,{success:false,message:'no such user'});
+        callback({success:false,message:'no such user'},null);
     }
     else if(user){
         console.log('password verification');
         if(user.password!=user.password){
          //   res.json({success:false,message:"authentication failed.Wrong password"});
-           callback(null,{success:false,message:"authentication failed.Wrong password"});
+           callback({success:false,message:"authentication failed.Wrong password"},null);
         }
         else
         {
@@ -65,4 +65,25 @@ exports.authenticateUser = function(user,secret, callback){
     }
 })}
 
-
+exports.tokenVerification = function(token,secret,callback)
+{
+    console.log('Starting to verify token...');
+    if(token){
+        jwt.verify(token,secret,function(err,decode) {
+            if(err){
+                console.log(err.message);
+                callback(null,{success:false,message:'Failed to authenticate token. '});
+               // return res.json({success:false,message:'Failed to authenticate token. '});
+            }
+            else{
+                req.decoded = decode;
+               // next();
+                callback(req.decoded,null);
+            }
+        })
+    }
+    else{
+        callback(null,{success:false,message:'No token provided'})
+        //return res.status(403).send({success:false,message:'No token provided'});
+    }
+}
