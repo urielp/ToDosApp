@@ -7,6 +7,7 @@ var ToDo = require('../models/todo.model');
 
 _this = this;
 
+
 //async function to get the todo list
 //with pagnitation
 
