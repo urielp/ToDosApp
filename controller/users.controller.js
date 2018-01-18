@@ -71,14 +71,15 @@ UserService.tokenVerification(token,secret,(response,err)=>{
 }
 
 
-exports.tokenVerificationRefact = async function(req,res,token){
+exports.tokenVerificationRefact = async function(req,res,token,next){
 
     try {
         console.log("tokenVerificationRefact");
         var results = await UserService.authenticateUserRefact(token,req.app.get('superSecret'));
 
         if (results.results==='Success' && results.data )
-            return res.status(200).json({status:200,data:results.data,message:"great"});
+            //return res.status(200).json({status:200,data:results.data,message:"great"});
+            next();
         else {
 
             return res.status(500).json({status: 500, message: "Token Error"});

@@ -32,18 +32,18 @@ router.use((req,res,next) =>{
         try {
            //var result = UsersController.tokenVerificationRefact( req, res,token);
 
-               let result =  UsersController.tokenVerificationRefact( req, res,token);
+               let result =  UsersController.tokenVerificationRefact( req, res,token,next);
                 result.then(()=>{
                     try{
-                    next();}
+
+                    }
                     catch(ex){
+                        console.log('ohy vay!');
                         console.log(ex);
                     }
                 }),()=>{
                     console.log('something went wrong')
                 }
-
-
         }
         // UsersController.tokenVerification(token,req.app.get('superSecret'),(response,err) =>{
         //         if(err)
@@ -62,6 +62,7 @@ router.use((req,res,next) =>{
             console.log("error here");
             console.log(exception.message);
         }
+
     }
      else{
          return res.status(403).send({success:false,message:'No token provided'});
