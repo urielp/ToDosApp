@@ -15,7 +15,6 @@ router.get('/',UsersController.usersWelcome);
 
 
 //testing async
-
 router.post('/test',UsersController.myTestAsync);
 
 //authenticate users
@@ -26,23 +25,43 @@ router.use((req,res,next) =>{
 
     console.log("Starting to Verify User!");
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
-
+    console.log(token);
     if(token)
     {
 
-        UsersController.tokenVerification(token,req.app.get('superSecret'),(response,err) =>{
-                if(err)
-                {
-                    console.log(err.message);
-                    return res.json({success:false,message:'Failed to authenticate token. '});
-                }
-                else{
-                    console.log(response);
-                    req.decoded = decode;
-                    next();
+        try {
+           //var result = UsersController.tokenVerificationRefact( req, res,token);
+
+               let result =  UsersController.tokenVerificationRefact( req, res,token);
+                result.then(()=>{
+                    try{
+                    next();}
+                    catch(ex){
+                        console.log(ex);
+                    }
+                }),()=>{
+                    console.log('something went wrong')
                 }
 
-        });
+
+        }
+        // UsersController.tokenVerification(token,req.app.get('superSecret'),(response,err) =>{
+        //         if(err)
+        //         {
+        //             console.log(err.message);
+        //             return res.json({success:false,message:'Failed to authenticate token. '});
+        //         }
+        //         else{
+        //             console.log(response);
+        //             req.decoded = decode;
+        //             next();
+        //         }
+        //
+        // });
+        catch (exception){
+            console.log("error here");
+            console.log(exception.message);
+        }
     }
      else{
          return res.status(403).send({success:false,message:'No token provided'});

@@ -89,7 +89,31 @@ exports.tokenVerification = function(token,secret,callback)
 }
 
 
-    
+//refactoring authenticateuser
+exports.authenticateUserRefact = async function(token,secret){
+
+        console.log('Starting to verify token...');
+
+
+        if(token){
+            try {
+                var decoded = await jwt.verify(token, secret);
+                return {results:'Success',data:decoded};
+            }
+            catch (exception)
+            {
+                console.log(exception.message);
+                return {success:false,message:exception.message};
+            }
+        }
+        else{
+            return {success:false,message:'No Token Provided'};
+        }
+    }
+
+
+
+
 //use this base skeleton for async/await usage
 ///this is working now
 exports.myTestAsync = async function (user) {
