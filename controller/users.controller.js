@@ -31,7 +31,7 @@ exports.usersWelcome = function welcomeUser(req,res,next){//async function welco
 exports.authenticateUser = async function authenticateUser(req,res,next)
 {
 
-
+console.log('authenticateUser-controller');
     var user = {
         username:req.body.username,
         password:req.body.password
@@ -56,7 +56,7 @@ exports.authenticateUser = async function authenticateUser(req,res,next)
 
 exports.tokenVerification = function (token,secret)
 {
-UserService.tokenVerification(token,secret,(response,err)=>{
+    UserService.tokenVerification(token,secret,(response,err)=>{
 
     if(!err){
        //return res.status(200).json(response);

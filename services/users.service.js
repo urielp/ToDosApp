@@ -23,7 +23,7 @@ exports.usersWelcome = function(callback){
 
 exports.authenticateUser = function(user,secret, callback){
 
-    console.log("am i here?");
+    console.log('authenticateUser -service')
         User.findOne({username:user.username},
         (err,user)=>{
         if(err){

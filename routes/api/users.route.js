@@ -23,6 +23,7 @@ router.post('/authenticate',UsersController.authenticateUser);
 //middleware
 router.use((req,res,next) =>{
 
+    console.log(req.body);
     console.log("Starting to Verify User!");
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
     console.log(token);
