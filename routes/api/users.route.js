@@ -100,4 +100,12 @@ router.get('/usersList',(req,res)=>{
         res.json(users);
     })
 });
+
+router.get('/user/:id',UsersController.getUser
+/*    (req,res)=>{
+    User.find({_id:id},(err,users)=>{
+        res.json(users);
+    })
+
+}*/);
 module.exports = router;

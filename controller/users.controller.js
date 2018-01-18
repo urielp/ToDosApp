@@ -30,6 +30,8 @@ exports.usersWelcome = function welcomeUser(req,res,next){//async function welco
 
 exports.authenticateUser = async function authenticateUser(req,res,next)
 {
+
+
     var user = {
         username:req.body.username,
         password:req.body.password
@@ -74,7 +76,6 @@ UserService.tokenVerification(token,secret,(response,err)=>{
 exports.tokenVerificationRefact = async function(req,res,token,next){
 
     try {
-        console.log("tokenVerificationRefact");
         var results = await UserService.authenticateUserRefact(token,req.app.get('superSecret'));
 
         if (results.results==='Success' && results.data )
@@ -86,7 +87,6 @@ exports.tokenVerificationRefact = async function(req,res,token,next){
         }
     }
     catch (exception){
-        console.log(88888);
         return  res.status(500).json({status:500,message:exception.message});
     }
 }
@@ -111,7 +111,16 @@ exports.myTestAsync =async function(req,res)
 
 }
 
+exports.getUser =async function(req,res){
 
+
+   let results =  UserService.getUser(req.params['id']);
+
+    results.then((answer)=>{
+        return res.status(200).json({success:true,data:answer.data,message:'found'});
+
+    });
+};
 
 
 

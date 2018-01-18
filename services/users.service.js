@@ -23,6 +23,7 @@ exports.usersWelcome = function(callback){
 
 exports.authenticateUser = function(user,secret, callback){
 
+    console.log("am i here?");
         User.findOne({username:user.username},
         (err,user)=>{
         if(err){
@@ -91,10 +92,6 @@ exports.tokenVerification = function(token,secret,callback)
 
 //refactoring authenticateuser
 exports.authenticateUserRefact = async function(token,secret){
-
-        console.log('Starting to verify token...');
-
-
         if(token){
             try {
                 var decoded = await jwt.verify(token, secret);
@@ -125,5 +122,18 @@ exports.myTestAsync = async function (user) {
     catch(exception)
     {
         return exception.message;
+    }
+}
+
+exports.getUser = async  function(id){
+    try
+    {
+        var user = await User.findOne({_id:id});
+        if(user){
+                return {success:true,data:user,message:'User Found'};
+        }
+    }
+    catch(exception){
+        return {success:false,data:{},message:'User no found'};
     }
 }
