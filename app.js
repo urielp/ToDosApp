@@ -6,7 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var bluebird = require('bluebird');
+var jwt    = require('jsonwebtoken');
 var index = require('./routes/index');
+var login = require('./routes/api/login');
 var users = require('./routes/users');
 var api =require('./routes/api.route');
 var config = require('./config/config');
@@ -29,8 +31,9 @@ app.set('superSecret',config.secret);
 //CORS configuration
 app.use(function(req,res,next){
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Methods", "OPTIONS,GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,headerName");
+  res.header('Access-Control-Allow-Credentials', true);
   next();
 });
 
@@ -49,9 +52,43 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+app.use('/login',login);
+// route middleware to verify a token
+app.use(function(req, res, next) {
+
+    // check header or url parameters or post parameters for token
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+    console.log(req.headers);
+    // decode token
+    if (token) {
+
+        // verifies secret and checks exp
+        jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+            if (err) {
+                return res.json({ success: false, message: 'Failed to authenticate token.' });
+            } else {
+                // if everything is good, save to request for use in other routes
+                req.decoded = decoded;
+                next();
+            }
+        });
+
+    } else {
+
+        // if there is no token
+        // return an error
+        return res.status(403).send({
+            success: false,
+            message: 'No token provided.'
+        });
+
+    }
+});
 app.use('/', index);
 app.use('/api',api);
-//app.use('/users', users);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

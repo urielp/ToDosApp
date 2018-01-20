@@ -122,5 +122,28 @@ exports.getUser =async function(req,res){
     });
 };
 
+exports.authenticateUserupdated = async function(req,res){
+
+    let user ={
+        username:req.body.username,
+        password:req.body.password
+    }
+    try {
+        let result  = await UserService.authenticateUserupdated(user,req.app.get('superSecret'));
+        if(result.success)
+        {
+            console.log(result.success);
+            return res.status(200).json({success:true,data:result,message:"token granted"})
+        }else{
+            console.log(result.success);
+            return res.status(200).json({success:false,data:{},message:"no token"})
+        }
+    }
+    catch(exception){
+        console.log("Got Some Error");
+        return exception.message;
+    }
+}
+
 
 

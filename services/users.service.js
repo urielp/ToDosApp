@@ -21,6 +21,48 @@ exports.usersWelcome = function(callback){
     }
 }
 
+exports.authenticateUserupdated = async function(user,secret){
+
+    console.log("first trying to find user in db");
+
+    try {
+        console.log(user.username);
+        var resultUser =  await User.findOne({username: user.username});
+        console.log(resultUser);
+
+        if(!resultUser)
+        {
+            console.log("user not found");
+            return {success:false,message:"user not found"};
+        }
+        else if(resultUser){
+            console.log("trying to verify password "+resultUser.password);
+            if(user.password!=resultUser.password){
+                return {success:false,message:"Wrong password"};
+            }
+            else
+            {
+                console.log('generating token');
+                const payload ={
+                    admin:resultUser.admin
+                };
+                console.log(payload.admin);
+                var token =jwt.sign(payload,secret,{
+                    expiresIn:1440
+                });
+                console.log(token);
+                return {success:true,data:token,message:"enjoy your token"};
+
+            }
+        }
+
+    }
+
+    catch(exception){
+       console.log("Wow" + exception.message);
+    }
+}
+
 exports.authenticateUser = function(user,secret, callback){
 
     console.log('authenticateUser -service')
@@ -107,8 +149,6 @@ exports.authenticateUserRefact = async function(token,secret){
             return {success:false,message:'No Token Provided'};
         }
     }
-
-
 
 
 //use this base skeleton for async/await usage

@@ -15,85 +15,54 @@ router.get('/',UsersController.usersWelcome);
 
 
 //testing async
-router.post('/test',UsersController.myTestAsync);
+//router.post('/test',UsersController.myTestAsync);
 
+/*
 //authenticate users
-router.post('/authenticate',UsersController.authenticateUser);
+router.post('/authenticate',UsersController.authenticateUserupdated);
+*/
 
-//middleware
-router.use((req,res,next) =>{
 
-    console.log(req.body);
-    console.log("Starting to Verify User!");
+// route middleware to verify a token
+/*router.use(function(req, res, next) {
+
+    // check header or url parameters or post parameters for token
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    console.log(token);
-    if(token)
-    {
+console.log(token);
+    // decode token
+    if (token) {
 
-        try {
-           //var result = UsersController.tokenVerificationRefact( req, res,token);
+        // verifies secret and checks exp
+        jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+            if (err) {
+                return res.json({ success: false, message: 'Failed to authenticate token.' });
+            } else {
+                // if everything is good, save to request for use in other routes
+                req.decoded = decoded;
+                next();
+            }
+        });
 
-               let result =  UsersController.tokenVerificationRefact( req, res,token,next);
-                result.then(()=>{
-                    try{
+    } else {
 
-                    }
-                    catch(ex){
-                        console.log('ohy vay!');
-                        console.log(ex);
-                    }
-                }),()=>{
-                    console.log('something went wrong')
-                }
-        }
-        // UsersController.tokenVerification(token,req.app.get('superSecret'),(response,err) =>{
-        //         if(err)
-        //         {
-        //             console.log(err.message);
-        //             return res.json({success:false,message:'Failed to authenticate token. '});
-        //         }
-        //         else{
-        //             console.log(response);
-        //             req.decoded = decode;
-        //             next();
-        //         }
-        //
-        // });
-        catch (exception){
-            console.log("error here");
-            console.log(exception.message);
-        }
+        // if there is no token
+        // return an error
+        return res.status(403).send({
+            success: false,
+            message: 'No token provided.'
+        });
 
     }
-     else{
-         return res.status(403).send({success:false,message:'No token provided'});
-     }
-})
-    // var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    // console.log(token);
-    // if(token){
-    //
-    //     UsersController.tokenVerification(token);
-    //     jwt.verify(token,req.app.get('superSecret'),function(err,decode) {
-    //         if(err){
-    //             console.log(err.message);
-    //             return res.json({success:false,message:'Failed to authenticate token. '});
-    //         }
-    //         else{
-    //             req.decoded = decode;
-    //             next();
-    //         }
-    //     })
-    // }
-    // else{
-    //     return res.status(403).send({success:false,message:'No token provided'});
-    // }
+});*/
+
 
 //getting users list
 // router.get('/users',(req,res)=>{
 //     User.find({},(err,users)=>{
 //         res.json(users);
 //     }}));
+
+
 
 router.get('/usersList',(req,res)=>{
     console.log("Hello World!");

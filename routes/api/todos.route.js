@@ -8,7 +8,14 @@ var router =express.Router();
 
 var ToDoController = require('../../controller/todos.controller');
 
-
+//CORS configuration
+express().use(function(req,res,next){
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "OPTIONS,GET, POST, PUT, DELETE");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Credentials', true);
+    next();
+});
 
 router.get('/',ToDoController.getToDos);
 
