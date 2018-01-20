@@ -11,22 +11,22 @@ var UsersController = require('../controller/users.controller');
 
 
 
-// router.get('/setup',function(req,res){
-//   var Uriel = new User({
-//     username:'Uriel2',
-//     password:'12345',
-//     admin:true
-//   });
-//
-//   Uriel.save(function(err){
-//     if(err){
-//       console.log(err.message);
-//       throw err;
-//     }
-//     console.log('User saved');
-//     res.json({success:true});
-//   })
-// });
+router.get('/setup',function(req,res){
+  var Uriel = new User({
+    username:'Uriel2',
+    password:'12345',
+    admin:true
+  });
+
+  Uriel.save(function(err){
+    if(err){
+      console.log(err.message);
+      throw err;
+    }
+    console.log('User saved');
+    res.json({success:true});
+  })
+});
 
 
 //authenticating  a user

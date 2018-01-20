@@ -31,8 +31,8 @@ app.set('superSecret',config.secret);
 //CORS configuration
 app.use(function(req,res,next){
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "OPTIONS,GET, POST, PUT, DELETE");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,headerName");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,x-access-token");
   res.header('Access-Control-Allow-Credentials', true);
   next();
 });
@@ -53,41 +53,57 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+
+
+var apiRouter = express.Router();
+
 app.use('/login',login);
+
+// // route middleware to verify a token
+// apiRouter.use(function(req, res, next) {
+//
+//     console.log('middleware')
+//     // check header or url parameters or post parameters for token
+//     var token = req.body.token || req.query.token || req.headers['x-access-token'];
+//
+//
+//     // decode token
+//     if (token) {
+//
+//         // verifies secret and checks exp
+//         jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+//             if (err) {
+//                 return res.json({ success: false, message: 'Failed to authenticate token.' });
+//             } else {
+//                 // if everything is good, save to request for use in other routes
+//                 req.decoded = decoded;
+//                 next();
+//             }
+//         });
+//
+//     } else {
+//
+//         // if there is no token
+//         // return an error
+//         return res.status(403).send({
+//             success: false,
+//             message: 'No token provided.'
+//         });
+//
+//     }
+// });
+app.use('/', index);
 // route middleware to verify a token
 app.use(function(req, res, next) {
-
-    // check header or url parameters or post parameters for token
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
-
+    console.log('middleware');
     console.log(req.headers);
-    // decode token
-    if (token) {
 
-        // verifies secret and checks exp
-        jwt.verify(token, app.get('superSecret'), function(err, decoded) {
-            if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
-            } else {
-                // if everything is good, save to request for use in other routes
-                req.decoded = decoded;
-                next();
-            }
-        });
+    return res.status(400).json({success:false});
 
-    } else {
-
-        // if there is no token
-        // return an error
-        return res.status(403).send({
-            success: false,
-            message: 'No token provided.'
-        });
-
-    }
 });
-app.use('/', index);
 app.use('/api',api);
+
+
 
 
 // catch 404 and forward to error handler
