@@ -37,10 +37,10 @@ console.log('authenticateUser-controller');
         password:req.body.password
 
     };
-        console.log('auth users - controller');
+
         UserService.authenticateUser(user,req.app.get('superSecret'),(err, response)=>{
             if(!err) {
-                console.log("Response --> " + response);
+
                 return res.status(200).json({status: 200, data: response.token, message:response.message});
             }
             else
@@ -60,7 +60,7 @@ exports.tokenVerification = function (token,secret)
 
     if(!err){
        //return res.status(200).json(response);
-        console.log(response);
+
         return response;
     }
     else
@@ -132,10 +132,10 @@ exports.authenticateUserupdated = async function(req,res){
         let result  = await UserService.authenticateUserupdated(user,req.app.get('superSecret'));
         if(result.success)
         {
-            console.log(result.success);
+
             return res.status(200).json({success:true,data:result,message:"token granted"})
         }else{
-            console.log(result.success);
+
             return res.status(200).json({success:false,data:{},message:"no token"})
         }
     }

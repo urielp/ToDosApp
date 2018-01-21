@@ -6,11 +6,12 @@ var config = require('../../config/config');
 
 
 exports.auth =function(req,res,next){
-    var token = req.headers['x-access-token']
+    var token = req.headers['x-access-token'] || req.query || req.body ;
+
     if(token) {
         jwt.verify(token,config.secret, function(err, decoded) {
             if (err) {
-                return res.json({ success: false,data:{}, message: 'Failed to authenticate token.' });
+                return res.json({ success: false,data:{},message: 'Failed to authenticate token.' });
             } else {
                 // if everything is good, save to request for use in other routes
                 console.log('starting to decode token ');

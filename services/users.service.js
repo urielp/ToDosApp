@@ -22,13 +22,8 @@ exports.usersWelcome = function(callback){
 }
 
 exports.authenticateUserupdated = async function(user,secret){
-
-
-
     try {
-        console.log(user.username);
         var resultUser =  await User.findOne({username: user.username});
-        console.log(resultUser);
 
         if(!resultUser)
         {
@@ -42,22 +37,16 @@ exports.authenticateUserupdated = async function(user,secret){
             }
             else
             {
-
                 const payload ={
                     admin:resultUser.admin
                 };
-
                 var token =jwt.sign(payload,secret,{
                     expiresIn:1440
                 });
-
                 return {success:true,data:token,message:"enjoy your token"};
-
             }
         }
-
     }
-
     catch(exception){
        console.log("Wow" + exception.message);
     }
@@ -89,11 +78,11 @@ exports.authenticateUser = function(user,secret, callback){
             const payload ={
                 admin:user.admin
             };
-            console.log(payload.admin);
+
             var token =jwt.sign(payload,secret,{
                 expiresIn:1440
             });
-            console.log(token);
+
             // res.json({
             //     success:true,
             //     message:'Enjoy your token',
