@@ -10,6 +10,7 @@ _this=this;
 
 exports.getToDos = async function getToDos(req,res,next){
 
+
     var page = req.query.page ? req.query.page:1;
     var limit = req.query.limit ? req.query.limit : 10;
 
@@ -20,7 +21,7 @@ exports.getToDos = async function getToDos(req,res,next){
     }
 
     catch(exception){
-        return res.status(400).json({status:400,message:exception.message});
+        return res.status(400).json({status:400,data:{},message:exception.message});
     }
 }
 

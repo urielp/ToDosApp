@@ -9,8 +9,7 @@ var bluebird = require('bluebird');
 var jwt    = require('jsonwebtoken');
 var index = require('./routes/index');
 var login = require('./routes/api/login');
-var users = require('./routes/users');
-var api =require('./routes/api.route');
+var api = require('./routes/api.route');
 var config = require('./config/config');
 var app = express();
 
@@ -30,11 +29,22 @@ app.set('superSecret',config.secret);
 
 //CORS configuration
 app.use(function(req,res,next){
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE,OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,x-access-token");
-  res.header('Access-Control-Allow-Credentials', true);
-  next();
+  // res.header("Access-Control-Allow-Origin","*");
+  // res.header("Access-Control-Allow-Methods","GET,POST,PUT,DELETE,OPTIONS");
+  // res.header("Access-Control-Allow-Headers","Origin,X-Requested-With,Content-Type,Accept-Encoding,Accept,Auth,Pragma");
+  // res.header('Access-Control-Allow-Credentials', true);
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, " +
+                                               "Origin,Accept, " +
+                                               "X-Requested-With, " +
+                                               "Content-Type, " +
+                                               "Access-Control-Request-Method," +
+                                               "Access-Control-Request-Headers," +
+                                               "x-access-token,referer");
+
+    next();
 });
 
 
@@ -54,54 +64,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-
-var apiRouter = express.Router();
-
 app.use('/login',login);
 
-// // route middleware to verify a token
-// apiRouter.use(function(req, res, next) {
-//
-//     console.log('middleware')
-//     // check header or url parameters or post parameters for token
-//     var token = req.body.token || req.query.token || req.headers['x-access-token'];
-//
-//
-//     // decode token
-//     if (token) {
-//
-//         // verifies secret and checks exp
-//         jwt.verify(token, app.get('superSecret'), function(err, decoded) {
-//             if (err) {
-//                 return res.json({ success: false, message: 'Failed to authenticate token.' });
-//             } else {
-//                 // if everything is good, save to request for use in other routes
-//                 req.decoded = decoded;
-//                 next();
-//             }
-//         });
-//
-//     } else {
-//
-//         // if there is no token
-//         // return an error
-//         return res.status(403).send({
-//             success: false,
-//             message: 'No token provided.'
-//         });
-//
-//     }
-// });
-app.use('/', index);
-// route middleware to verify a token
-app.use(function(req, res, next) {
-    console.log('middleware');
-    console.log(req.headers);
-
-    return res.status(400).json({success:false});
-
-});
 app.use('/api',api);
+app.use('/', index);
+
+
 
 
 
